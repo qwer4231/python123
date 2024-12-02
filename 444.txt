@@ -1,0 +1,117 @@
+class Movie:
+
+    def __init__(self, title, schedule):
+
+        self.title = title  
+
+        self.schedule = schedule  
+
+        self.seats = {time: [False] * 10 for time in schedule}
+
+ 
+
+    def reserve_seat(self, time, seat_number):
+
+        """특정 시간대에 특정 좌석을 예약하는 메서드"""
+
+        if time not in self.schedule:
+
+            print(f"경고: {self.title}의 {time} 시간대는 존재하지 않습니다.")
+
+            return
+
+        if seat_number < 1 or seat_number > 10:
+
+            print("경고: 좌석 번호는 1에서 10 사이여야 합니다.")
+
+            return
+
+        if self.seats[time][seat_number - 1]:
+
+            print(f"경고: {self.title}의 {time} 시간대 {seat_number}번 좌석은 이미 예약되었습니다.")
+
+        else:
+
+            self.seats[time][seat_number - 1] = True
+
+            print(f"{self.title}의 {time} 시간대 {seat_number}번 좌석이 예약되었습니다.")
+
+ 
+
+    def get_available_seats(self, time):
+
+        """특정 시간대에 예약 가능한 좌석 수를 반환"""
+
+        if time not in self.schedule:
+
+            print(f"경고: {self.title}의 {time} 시간대는 존재하지 않습니다.")
+
+            return 0
+
+        available_seats = self.seats[time].count(False)
+
+        return available_seats
+
+ 
+
+class Theater:
+
+    def __init__(self):
+
+        self.movies = {}  
+
+ 
+
+    def add_movie(self, title, schedule):
+
+        """영화를 추가하는 메서드"""
+
+        if title not in self.movies:
+
+            movie = Movie(title, schedule)
+
+            self.movies[title] = movie
+
+            print(f"{title} 영화가 추가되었습니다.")
+
+        else:
+
+            print(f"경고: {title} 영화는 이미 존재합니다.")
+
+ 
+
+    def reserve_movie_seat(self, title, time, seat_number):
+
+        """특정 영화의 특정 시간대에 좌석을 예약하는 메서드"""
+
+        if title not in self.movies:
+
+            print(f"경고: {title} 영화는 존재하지 않습니다.")
+
+            return
+
+        movie = self.movies[title]
+
+        movie.reserve_seat(time, seat_number)
+
+ 
+
+    def get_movie_schedule(self, title):
+
+        """특정 영화의 상영 시간표와 예약 가능한 좌석 수를 출력하는 메서드"""
+
+        if title not in self.movies:
+
+            print(f"경고: {title} 영화는 존재하지 않습니다.")
+
+            return
+
+        movie = self.movies[title]
+
+        print(f"{title} 영화의 상영 시간표:")
+
+        for time in movie.schedule:
+
+            available_seats = movie.get_available_seats(time)
+
+            print(f"  {time}: {available_seats}개의 좌석이 예약 가능합니다.")
