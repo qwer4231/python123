@@ -1,0 +1,85 @@
+class Student:
+
+    def __init__(self, name, student_id):
+
+        self.name = name  
+
+        self.student_id = student_id  
+
+        self.scores = []  
+
+ 
+
+    def add_score(self, score):
+
+        """학생에게 점수를 추가하는 메서드"""
+
+        self.scores.append(score)
+
+ 
+
+    def calculate_average(self):
+
+        """학생의 평균 점수를 계산하여 반환하는 메서드"""
+
+        if self.scores:
+
+            return sum(self.scores) / len(self.scores)
+
+        return 0  
+
+ 
+
+class GradeBook:
+
+    def __init__(self):
+
+        self.students = []  
+
+        self.student_ids = set() 
+
+ 
+
+    def add_student(self, name, student_id):
+
+        """학생을 성적부에 추가하는 메서드"""
+
+        if student_id not in self.student_ids:
+
+            student = Student(name, student_id)
+
+            self.students.append(student)
+
+            self.student_ids.add(student_id)
+
+        else:
+
+            print(f"학번 {student_id}은 이미 존재하는 학생입니다.")
+
+ 
+
+    def add_student_score(self, student_id, score):
+
+        """특정 학번의 학생에게 점수를 추가하는 메서드"""
+
+        for student in self.students:
+
+            if student.student_id == student_id:
+
+                student.add_score(score)
+
+                return
+
+        print(f"학번 {student_id}에 해당하는 학생이 없습니다.")
+
+ 
+
+    def get_top_students(self, n):
+
+        """상위 N명의 학생을 평균 점수 기준으로 정렬하여 이름과 평균 점수를 리스트로 반환"""
+
+        sorted_students = sorted(self.students, key=lambda student: student.calculate_average(), reverse=True)
+
+        top_students = [(student.name, student.calculate_average()) for student in sorted_students[:n]]
+
+        return top_students
