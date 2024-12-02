@@ -1,0 +1,87 @@
+class Student:
+
+    def __init__(self, name, student_id):
+
+        self.name = name 
+
+        self.student_id = student_id 
+
+        self.attendance = False 
+
+    def mark_attendance(self):
+
+        """학생의 출석 여부를 True로 변경"""
+
+        self.attendance = True
+
+ 
+
+class AttendanceBook:
+
+    def __init__(self):
+
+        self.students = []  
+
+        self.student_ids = set()  
+
+ 
+
+    def add_student(self, name, student_id):
+
+        """학생을 출석부에 추가하는 메서드"""
+
+        if student_id not in self.student_ids:
+
+            student = Student(name, student_id)
+
+            self.students.append(student)
+
+            self.student_ids.add(student_id)
+
+        else:
+
+            print(f"학번 {student_id}은 이미 존재하는 학생입니다.")
+
+ 
+
+    def mark_student_attendance(self, student_id):
+
+        """특정 학번의 학생 출석 여부를 True로 변경"""
+
+        for student in self.students:
+
+            if student.student_id == student_id:
+
+                student.mark_attendance()
+
+                return
+
+        print(f"학번 {student_id}에 해당하는 학생이 없습니다.")
+
+ 
+
+    def get_attendance_summary(self):
+
+        """출석과 결석 인원을 세어서 딕셔너리로 반환"""
+
+        summary = {"출석": 0, "결석": 0}
+
+        for student in self.students:
+
+            if student.attendance:
+
+                summary["출석"] += 1
+
+            else:
+
+                summary["결석"] += 1
+
+        return summary
+
+ 
+
+    def get_student_list(self):
+
+        """출석한 학생들의 이름을 리스트로 반환"""
+
+        return [student.name for student in self.students if student.attendance]
